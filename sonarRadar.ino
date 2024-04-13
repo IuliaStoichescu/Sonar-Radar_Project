@@ -1,7 +1,7 @@
 #include<Servo.h> //biblioteca necesara pentru a controla un servomotor
 
-#define trigPin 8 //pinul conectat la pinul de trimitere (TRIG) al senzorului
-#define echoPin 9 // pinul conectat la pinul de recepție (ECHO) al senzorului
+#define trigPin 10 //pinul conectat la pinul de trimitere (TRIG) al senzorului
+#define echoPin 11 // pinul conectat la pinul de recepție (ECHO) al senzorului
 
 long duration; //durata timpului între trimiterea și primirea semnalului
 int distance ; //distanța calculată în centimetri
@@ -27,7 +27,7 @@ void setup() //inițializare Arduino
 {
   pinMode(trigPin , OUTPUT); //seteaza pinul trigPin ca iesire pentru a trimite semnalul 
   pinMode(echoPin, INPUT); //seteaza pinul echoPin ca intrare pentru a citi semnalul de intoarcere 
-  myservo.attach(11); //ataseaza pinul de control la pinul 11
+  myservo.attach(12); //ataseaza pinul de control la pinul 11
   Serial.begin(9600); //initializeaza comunicarea seriala la o rata de transfer de 9600 de biti pe secunda
 }
 
