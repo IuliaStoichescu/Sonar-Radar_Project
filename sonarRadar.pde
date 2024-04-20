@@ -81,3 +81,103 @@ void drawLine()
   line(0,0,950*cos(radians(receivedAngle)),-950*sin(radians(receivedAngle))); // deseneaza linia in functie de unghi
   popMatrix();
 }
+
+void drawObject() 
+{
+  pushMatrix();
+  
+  translate(960,1000); //muta coordonatele de inceput la o noua locatie
+  strokeWeight(9); //grosime de 9 pixeli a liniilor
+  stroke(255,10,10); //culoarea rosie
+  
+  pixelDistance = receivedDistance * 22.5; //transforma distanta de la senzor din centimetri in pixeli
+  
+  if(receivedDistance < 40) //limiteaza intervalul la 40 cm
+  {
+    //deseneaza obiectul conform unghiului si a distantei
+    line(pixelDistance*cos(radians(receivedAngle)),-pixelDistance*sin(radians(receivedAngle)),950*cos(radians(receivedAngle)),-950*sin(radians(receivedAngle)));
+  }
+  
+  popMatrix();
+}
+
+void drawText() 
+{ 
+  //deseneaza textul de ecran
+  pushMatrix();
+  
+  if(receivedDistance > 40) 
+  {
+    noDataReceived = "Out of range";
+  }
+  else 
+  {
+    noDataReceived = "In range";
+  }
+  
+  fill(0,0,0); //deseneaza un dreptunghi negru in partea de jos a ecranului pentru a afisa textul
+  noStroke();
+  rect(0, 1010, width, 1080);
+  
+  //afiseaza marcajele de pe axa distantelor: "10cm", "20cm", "30cm", "40cm", pentru a indica intervalul de distanta pe ecran
+  fill(98,245,31);
+  textSize(25); 
+  text("10cm",1180,990);
+  text("20cm",1380,990);
+  text("30cm",1580,990);
+  text("40cm",1780,990);
+  
+  //afiseaza starea obiectului detectat, care poate fi "Out of range" sau "In range"
+  textSize(40);
+  text("Object: " + noDataReceived, 240, 1050);
+  text("Angle: " + receivedAngle +" °", 1050, 1050);
+  text("Distance: ", 1380, 1050);
+  
+  //afiseaza distanta numai daca este in limitele acceptabile
+  if(receivedDistance < 40) 
+  {
+    text("        " + receivedDistance +" cm", 1400, 1050);
+  }
+  
+  //plaseaza si roteaza marcajele pentru unghiuri la pozitiile corecte pe ecran
+  textSize(25);
+  fill(98,245,60);
+  translate(961+960*cos(radians(30)),982-960*sin(radians(30)));
+  rotate(-radians(-60));  
+  text("30°",0,0);
+  resetMatrix();
+  translate(954+960*cos(radians(60)),984-960*sin(radians(60)));
+  rotate(-radians(-30));
+  text("60°",0,0);
+  resetMatrix();
+  translate(945+960*cos(radians(90)),990-960*sin(radians(90)));
+  rotate(radians(0));
+  text("90°",0,0);
+  resetMatrix();
+  translate(935+960*cos(radians(120)),1003-960*sin(radians(120)));
+  rotate(radians(-30)); 
+  text("120°",0,0);
+  resetMatrix();
+  translate(940+960*cos(radians(150)),1018-960*sin(radians(150)));
+  rotate(radians(-60));
+  text("150°",0,0);
+  
+  popMatrix(); 
+}
+
+void draw() 
+{
+  fill(98,245,31); //culoarea verde
+  textFont(orcFont);
+  
+  noStroke(); //simularea estomparii miscarii și a diminuarii treptate a liniei in miscare 
+  fill(0,4); 
+  rect(0, 0, width, 1010); 
+  
+  fill(98,245,31); //culoarea verde
+  
+  drawRadar(); //desenarea radarului
+  drawLine();
+  drawObject();
+  drawText();
+}
